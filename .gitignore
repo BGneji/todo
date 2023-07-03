@@ -1,0 +1,5 @@
+todo_app/
+__pycache__
+node_modules
+todo_app/idea/
+.idea/
