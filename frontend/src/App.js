@@ -1,4 +1,4 @@
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
@@ -6,7 +6,17 @@ function App() {
     const [todos, setTodos] = useState([])
     const addTodoHandler = ()=>{
         console.log('click');
-    }
+    };
+
+    const deleteTodoHandler = ()=>{
+    console.log('Delete');
+    };
+
+
+
+
+
+
 
     useEffect(()=>{
         const fetchTodos = async () => {
@@ -32,7 +42,17 @@ function App() {
           <div className="mt-5 flex flex-col space-y-5 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
           {todos?.map((todo, index)=>(
            <div key={todo.id} className="max-w-md mx-auto w-full p-5 h-full rounded-xl bg-blue-500 flex items-center justify-between">
-           <p> {todo.name}</p></div>
+           <p className="cursor-pointer">
+           {todo.name}
+           {" "}
+           {todo.status && (
+           <span className="text-xs text-gray-300">(Completed)</span>
+           )}
+           </p>
+            <i onClick={() => deleteTodoHandler(todo.id)}>
+                <TrashIcon className="h-5 2-5 cursor-pointer icons" fill="white" />
+              </i>
+           </div>
           ))}
           </div>
       </div>
