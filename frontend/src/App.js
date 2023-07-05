@@ -44,7 +44,6 @@ function App() {
             setEditStatus(todo.status)
             setEditName(todo.name)
             setOpenEditUI(true)
-
            }} className="cursor-pointer">
 
            {todo.name}{" "}
