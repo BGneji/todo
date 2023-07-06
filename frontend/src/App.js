@@ -4,13 +4,32 @@ import axios from "axios";
 
 function App() {
     const [todos, setTodos] = useState([]);
+    const [name, setName] = useState('')
     const [editStatus, setEditStatus] = useState(false)
-    const [editName, setEditName] = useState('')
+    const [editName, setEditName] = useState('');
+    const [editTodo, setEditTodo] = useState({});
     const [openEditUI, setOpenEditUI] = useState(false)
 
     const addTodoHandler = ()=>{
-        console.log('click');
+        const postTodo = async()=>{
+            const postTododata = {
+                name:name
+            }
+            const {data} = await axios.post(
+            'http://127.0.0.1:8000/todos/',
+            postTododata
+            );
+            //       обнавление сразу после добавление новой записи
+            setTodos([...todos, data])
+            setName("")
+        };
+
+        postTodo()
     };
+
+    const editTodoHandler=(id)=>{
+        console.log(id)
+    }
 
     const deleteTodoHandler = ()=>{
     console.log('Delete');
@@ -29,6 +48,8 @@ function App() {
         <h1 className="text-5xl text-center pb-5">Todo App</h1>
         <div className="flex items-center justify-between bg-slate-700 rounded-xl px-4">
           <input
+            value={name}
+            onChange={(e)=> setName(e.target.value)}
             type="text"
             className="w-full py-2 rounded-xl bg-slate-700 text-white outline-none"
             placeholder="Add ToDo here..."
@@ -43,6 +64,7 @@ function App() {
            <p onClick={()=>{
             setEditStatus(todo.status)
             setEditName(todo.name)
+            setEditTodo(todo)
             setOpenEditUI(true)
            }} className="cursor-pointer">
 
@@ -87,7 +109,9 @@ function App() {
             onChange={(e) => setEditName(e.target.value)}
           />
         </div>
-
+        <button onClick={()=> editTodoHandler(editTodo.id)} className="w-full p-2 rounded-xl bg-slate-700 text-white mt-2">
+        Update
+        </button>
       </div>
  </div>
   );
