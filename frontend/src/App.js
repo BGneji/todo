@@ -27,13 +27,34 @@ function App() {
         postTodo()
     };
 
-    const editTodoHandler=(id)=>{
-        console.log(id);
+    const editTodoHandler = (id) => {
+        const updatePatchTodo = async() =>{
+            const updateData = {
+            name: editName,
+            status: editStatus,
+            }
+              const {data} = await axios.patch(`http://127.0.0.1:8000/todos/${id}/`, updateData)
+              const updatedTodos = todos.map((todo) =>{
+                if(todo.id === id){
+                  todo.name = editName;
+                  todo.status = editStatus
+                }
+                return todo
+            })
+          setTodos(updatedTodos)
+          setEditTodo({})
+          setEditName('')
+          setEditStatus(false)
+          setOpenEditUI(false)
+
+
+        }
+        updatePatchTodo()
     };
 
     const deleteTodoHandler = (id)=>{
         const deleteTodo =async()=>{
-            await axios.delete(`http://127.0.0.1:8000/todos/${id}/  `)
+            await axios.delete(`http://127.0.0.1:8000/todos/${id}/`)
             const newTodos = todos.filter((todo)=> todo.id !== id)
             setTodos(newTodos)
         }

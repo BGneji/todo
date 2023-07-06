@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 # импорт ответа из rest_framework
 from rest_framework.response import Response
 # импорт статуса ответа из rest_framework
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from rest_framework.status import HTTP_200_OK
 
 from .models import Todo
 from .serializers import TodoSerializer
@@ -38,5 +38,13 @@ def todo(request, pk):
         todo = Todo.objects.get(pk=pk)
         todo.delete()
         return Response(status=HTTP_200_OK)
+
+    if request.method == 'PATCH':
+        todo = Todo.objects.get(pk=pk)
+        todo.name =request.data.get('name')
+        todo.status =request.data.get('status')
+        todo.save()
+        serializer = TodoSerializer(todo, many=False)
+        return Response(serializer.data)
 
 
